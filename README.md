@@ -22,6 +22,23 @@ npm run test:browser # Chromium 完整流程与截图检查
 
 浏览器测试默认使用 `/usr/bin/chromium`；其他机器设置 `CHROMIUM_PATH=/你的/浏览器路径 npm run test:browser`。也可 `npx playwright install chromium` 安装 Playwright 浏览器后，将 `CHROMIUM_PATH` 设置为该浏览器实际路径。网页正常运行不需要安装 Playwright 浏览器。
 
+## GitHub Pages 发布
+
+仓库提供 [自动部署工作流](.github/workflows/deploy-pages.yml)。在仓库 **Settings → Pages → Build and deployment** 中，将 **Source** 设为 **GitHub Actions**。首次启用需要有仓库 Pages 管理权限；工作流使用的默认 `GITHUB_TOKEN` 不负责首次开启站点，无需为工作流另外添加个人令牌。
+
+之后推送到 `main` 会自动安装锁定依赖、执行规则测试、按 `/ice-fishing/` 路径构建并部署 `dist/`。也可以在 **Actions → Deploy game to GitHub Pages → Run workflow** 手动重新发布。工作流使用 GitHub 官方 Actions 并固定完整提交 SHA；部署只授予 Pages 写入和 OIDC 令牌权限。
+
+预期站点地址为 `https://sci233.github.io/ice-fishing/`；只有工作流部署成功且网址实际可访问后，才表示已经上线。
+
+本地验证发布构建：
+
+```sh
+npm run build -- --base=/ice-fishing/
+npm run preview -- --base=/ice-fishing/
+```
+
+预览时打开终端显示地址下的 `/ice-fishing/` 路径。根路径开发仍使用 `npm run dev`，无需改变日常开发地址。公开网站同样是本地试玩规则，电脑角色不会变成在线玩家。
+
 ## 怎么玩
 
 - **WASD / 方向键**移动。走到冰面，**E**用开局破冰镐开洞，再按 **E** 抛竿。

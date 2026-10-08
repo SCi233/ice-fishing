@@ -39,3 +39,11 @@
 - 比赛以活动页面的仿真时间计时，极低帧率或切换后台时有时间步长保护，可能比墙上时钟慢；首版没有离线结算。
 
 完整操作和暂定值见 [README.md](README.md)。
+
+## GitHub Pages 配置验证
+
+新增 `.github/workflows/deploy-pages.yml`：`main` 推送或手动触发，Node 24、`npm ci`、规则测试、仓库子路径构建、官方 Pages artifact 与 OIDC 部署；Action 固定官方 tag 对应的完整 SHA。工作流 YAML 已实际解析验证。
+
+本次再次执行 `npm test`，28 项通过；执行 `npm run build -- --base=/ice-fishing/` 成功。用 Chromium 在本地生产预览的 `/ice-fishing/` 路径实际开始比赛、移动、开洞、等待并成功收竿，JS/CSS 两项资源均返回 200，页面错误与失败请求均为零。截图为 `test-results/screenshots/pages-path.png`。
+
+这些结果证明部署产物和子路径可用，不能替代公网发布验证。当前云代理对 `api.github.com` 和 `sci233.github.io` 返回 403，无法读取/修改仓库 Pages 设置或确认公开网址。网络允许域名已保存到环境配置草稿，需环境设置保存并发布后才会应用。首次启用 Pages 的 Source 需 GitHub Actions，默认工作流令牌无法代替管理权限完成首次启用。
